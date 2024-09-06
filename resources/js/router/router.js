@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import routes from "./routes";
-import store from '../store/store';  // Подключаем хранилище Vuex
+import store from '../store/store';  
 
 const router = createRouter({
   history: createWebHistory(),
@@ -14,7 +14,7 @@ router.beforeEach((to, from, next) => {
 
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (!isAuthenticated) {
-      next('/');
+      next('/login');
       return;
     }
 

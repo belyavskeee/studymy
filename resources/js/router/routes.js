@@ -19,12 +19,19 @@ import AddSubjectPage from "../components/pages/AddSubjectPage.vue";
 import AddGroupPage from "../components/pages/AddGroupPage.vue";
 import DeleteUserPage from "../components/pages/DeleteUserPage.vue";
 import DeleteGroupPage from "../components/pages/DeleteGroupPage.vue";
+import HomePage from "../components/pages/HomePage.vue";
 
 const routes = [
     {
-        path: '/', 
+        path: '/login', 
         component: AuthPage,
         name: 'Login',
+        meta: { requiresGuest: true }
+    },
+    {
+        path: '/', 
+        component: HomePage,
+        name: 'Home',
         meta: { requiresGuest: true }
     },
     {

@@ -18,13 +18,12 @@ class UserSeeder extends Seeder
         User::create([
             'login' => 'admin', // Логин пользователя
             'password' => '123123',
-            'password' => Hash::make('password'), // Пароль, обязательно хешированный
+            // 'password' => Hash::make('password'), // Пароль, обязательно хешированный
             'name' => 'Иван',
             'patronymic' => 'Иванович',
             'sname' => 'Иванов',
-            'b_date' => '1990-01-01',
-            'permission' => 'admin',
-            // 'group' => '1',
+            'permission' => 'Модератор',
+            'user_password' => '123123',
         ]);
     }
 }
