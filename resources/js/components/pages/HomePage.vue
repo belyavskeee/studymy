@@ -59,4 +59,11 @@ export default {
     padding: 0px;
     width: fit-content;
 }
+
+@media (max-width: 480px) {
+    .main-block {
+    margin: 0;
+    padding: 0px !important;
+}
+}
 </style>

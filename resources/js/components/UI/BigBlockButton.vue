@@ -207,4 +207,29 @@ export default {
   }
 }
 
+@media (max-width: 900px) {
+  .main-block-buttons {
+    grid-template-columns: repeat(1, 1fr); /* Два блока в ряду */
+  }
+}
+
+@media (max-width: 480px) {
+
+  .item-big-button {
+    display: block;
+    position: relative;
+    background-color: #dbe6f4; /* Цвет фона */
+    border-radius: 38px;
+    width: 100%;
+    height: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    -webkit-transition-duration: 0.5s; /* Safari */
+    transition-duration: 0.5s;
+    cursor: pointer;
+    overflow: hidden;
+  }
+}
+
 </style>
