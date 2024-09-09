@@ -2,6 +2,7 @@
     <my-header v-if="isAuthenticated"></my-header>
     <div class="auth-block main-block">
         <div class="home-block">
+            <h1>beStudy.by</h1>
         </div>
         <div>
             <big-block-button :options="valueButtons"/>
@@ -12,10 +13,13 @@
 
 <script>
 import BigBlockButton from "@/components/ui/BigBlockButton.vue";
+import RotatingText from '@/components/ui/RotatingText.vue';
+import { bottom, right } from "@popperjs/core";
 import { mapGetters, mapActions } from 'vuex';
 export default {
     components: {
-        BigBlockButton
+        BigBlockButton,
+        RotatingText
     },
     data() {
         return {
@@ -57,7 +61,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .main-block {
     /* margin: 20vh auto 0 auto; */
     padding: 0px 0 0 0;
@@ -72,7 +76,22 @@ export default {
     height: 250px;
     /* width: 150px; */
     margin: 20px 20px 0px 20px;
-    border-radius: 40px
+    border-radius: 40px;
+    overflow: hidden;
+
+    h1 {
+    user-select: none;
+    color: white;
+	vertical-align: middle;
+	margin: 0;
+	text-align: center;
+	position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+	font-size: 50px;
+	font-family: 'raleway-black', 'courier new', sans-serif;
+   }
 }
 
 @media (max-width: 480px) {
