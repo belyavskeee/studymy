@@ -179,9 +179,9 @@ export default {
     left: 0;
     top: 0;
     height: 100%;
-    background-color: #4f6384; /* Цвет фона для текста */
-    width: 0; /* Исходное значение ширины фона */
-    transition: width 0.4s ease; /* Анимация расширения фона */
+    background-color: #4f6384; 
+    width: 0; 
+    transition: width 0.4s ease; 
     border-radius: 20px;
   }
 

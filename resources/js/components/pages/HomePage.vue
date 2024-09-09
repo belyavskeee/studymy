@@ -1,7 +1,11 @@
 <template>
     <my-header v-if="isAuthenticated"></my-header>
     <div class="auth-block main-block">
-        <big-block-button :options="valueButtons"/>
+        <div class="home-block">
+        </div>
+        <div>
+            <big-block-button :options="valueButtons"/>
+        </div>
     </div>
     <my-footer/>
 </template>
@@ -56,8 +60,19 @@ export default {
 <style scoped>
 .main-block {
     /* margin: 20vh auto 0 auto; */
-    padding: 0px;
+    padding: 0px 0 0 0;
     width: fit-content;
+    display: grid;
+    position: relative;
+}
+
+.home-block {
+    position: relative;
+    background-color: #4f6384;
+    height: 250px;
+    /* width: 150px; */
+    margin: 20px 20px 0px 20px;
+    border-radius: 40px
 }
 
 @media (max-width: 480px) {
