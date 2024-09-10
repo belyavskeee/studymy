@@ -96,8 +96,17 @@ export default {
 
 @media (max-width: 480px) {
     .main-block {
-    margin: 0;
-    padding: 0px !important;
-}
+        margin: 0;
+        padding: 0px !important;
+    }
+
+    .home-block {
+        height: 200px;
+
+        h1 {
+            font-size: 35px;
+        }
+    }
+
 }
 </style>

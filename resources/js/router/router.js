@@ -13,11 +13,13 @@ router.beforeEach((to, from, next) => {
   const userPermission = store.getters.userPermission;
 
   if (to.matched.some(record => record.meta.requiresAuth)) {
+    // Если страница требует авторизации
     if (!isAuthenticated) {
       next('/login');
       return;
     }
 
+    // Если страница требует определенной роли
     if (to.matched.some(record => record.meta.allowedRoles)) {
       const allowedRoles = to.meta.allowedRoles;
 
@@ -25,6 +27,12 @@ router.beforeEach((to, from, next) => {
         next('/main');
         return;
       }
+    }
+  } else if (to.matched.some(record => record.meta.requiresGuest)) {
+    // Если страница доступна только для гостей (неавторизованных пользователей)
+    if (isAuthenticated) {
+      next('/'); // перенаправляем авторизованных пользователей на главную страницу или другую
+      return;
     }
   }
 

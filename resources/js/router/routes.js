@@ -20,6 +20,7 @@ import AddGroupPage from "../components/pages/AddGroupPage.vue";
 import DeleteUserPage from "../components/pages/DeleteUserPage.vue";
 import DeleteGroupPage from "../components/pages/DeleteGroupPage.vue";
 import HomePage from "../components/pages/HomePage.vue";
+import InstitutionsPage from "../components/pages/InstitutionsPage.vue";
 
 const routes = [
     {
@@ -32,13 +33,17 @@ const routes = [
         path: '/', 
         component: HomePage,
         name: 'Home',
-        meta: { requiresGuest: true }
     },
     {
         path: '/report-error', 
         component: ReportErrorPage,
         name: 'ReportError',
         // meta: { requiresAuth: true }
+    },
+    {
+        path: '/institutions', 
+        component: InstitutionsPage,
+        name: 'Institutions',
     },
     {
         path: '/store-errors', 
