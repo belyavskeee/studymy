@@ -21,6 +21,7 @@ import DeleteUserPage from "../components/pages/DeleteUserPage.vue";
 import DeleteGroupPage from "../components/pages/DeleteGroupPage.vue";
 import HomePage from "../components/pages/HomePage.vue";
 import InstitutionsPage from "../components/pages/InstitutionsPage.vue";
+import AccessSystemsPage from "../components/pages/AccessSystemsPage.vue";
 
 const routes = [
     {
@@ -44,6 +45,11 @@ const routes = [
         path: '/institutions', 
         component: InstitutionsPage,
         name: 'Institutions',
+    },
+    {
+        path: '/access-systems', 
+        component: AccessSystemsPage,
+        name: 'AccessSystems',
     },
     {
         path: '/store-errors', 

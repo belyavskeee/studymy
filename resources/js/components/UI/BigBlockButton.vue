@@ -67,6 +67,11 @@ export default {
   transition-duration: 0.5s;
   cursor: pointer;
   overflow: hidden;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* Internet Explorer/Edge */
+  user-select: none;         /* Стандартное свойство */
+
 
   .icon-background {
       position: absolute;
@@ -216,20 +221,20 @@ export default {
 @media (max-width: 480px) {
 
   .item-big-button {
-    display: block;
-    position: relative;
-    background-color: #dbe6f4; /* Цвет фона */
-    border-radius: 38px;
     width: 100%;
     height: 180px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    -webkit-transition-duration: 0.5s; /* Safari */
-    transition-duration: 0.5s;
-    cursor: pointer;
-    overflow: hidden;
+
+
+    p {
+      font-size: 13px;
+    }
+
+    h3 {
+      font-size: 24px;
+    }
+  
   }
+
 }
 
 </style>
