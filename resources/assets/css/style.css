@@ -1204,10 +1204,12 @@ html, body {
 	font-size: 14px;
 	font-family: 'rubick-regular', 'courier new', sans-serif;
 	font-weight: bold;
+	margin: 0;
 }
 .text-default{
 	font-size: 14px;
 	font-family: 'rubick-regular', 'courier new', sans-serif;
+	margin: 0;
 }
 
 .error {

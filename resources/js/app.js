@@ -6,6 +6,9 @@ import Store from '@/store/store';
 import BigLoader from '@/components/UI/BigLoader.vue';
 import MyFooter from "@/components/MyFooter.vue";
 import MyHeader from "@/components/MyHeader.vue";
+import MyNotification from "@/components/Notification.vue";
+
+import 'material-design-icons-iconfont/dist/material-design-icons.css';
 
 
 const app = createApp(App);
@@ -14,6 +17,7 @@ const app = createApp(App);
 app.component('big-loader', BigLoader);
 app.component('my-footer', MyFooter);
 app.component('my-header', MyHeader);
+app.component('my-notification', MyNotification);
 
 app.use(Router);
 app.use(Store);
