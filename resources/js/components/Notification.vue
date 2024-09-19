@@ -8,10 +8,10 @@
       >
         <div class="notification-content">
           <!-- Используйте динамический класс для иконки в зависимости от типа уведомления -->
-          <i class="notification-icon material-icons-round" :style="{ color: '#4E6384', fontSize: '24px', borderRadius: '50%', padding: '8px' }">error</i>
-          <span class="material-icons-round">
+          <!-- <i class="notification-icon material-icons-round" :style="{ color: '#4E6384', fontSize: '24px', borderRadius: '50%', padding: '8px' }">error</i> -->
+          <!-- <span class="material-icons-round">
 error
-</span>
+</span> -->
           <div class="text-content">
             <h4 class="text-default" v-if="notification.title">{{ notification.title }}</h4>
             <p class="text-default">{{ notification.message }}</p>

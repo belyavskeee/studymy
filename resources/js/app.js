@@ -8,8 +8,6 @@ import MyFooter from "@/components/MyFooter.vue";
 import MyHeader from "@/components/MyHeader.vue";
 import MyNotification from "@/components/Notification.vue";
 
-import 'material-design-icons-iconfont/dist/material-design-icons.css';
-
 
 const app = createApp(App);
 

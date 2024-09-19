@@ -5,9 +5,7 @@
         v-for="option in options" 
         :key="option.header" 
         @click="navigateToPage(option.path)"
-        :style="{
-          backgroundImage: 'linear-gradient(90deg, rgba(78, 99, 132, 1) 11%, rgba(82, 179, 182, 0.563) 100%), url(' + option.image + ')',
-        }"
+        
       >
         <div class="block-text-left">
           <h3>{{ option.header }}</h3>
@@ -50,6 +48,8 @@
   }
   
   .item-big-button-img {
+    background: linear-gradient(90deg, rgba(78, 99, 132, 1) 11%, rgba(82, 179, 182, 0.563) 100%), 
+              url('/resources/assets/images/qr_kode_scan.jpg') no-repeat center center; /* Добавляем фон */
   display: block;
   position: relative;
   background-size: cover;
@@ -103,7 +103,7 @@
   
   .item-big-button-img:hover {
     transform: scale(1.05); /* Эффект увеличения при наведении */
-    background-color: #4f6384;
+    // background-color: #4f6384;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   //   box-shadow: inset 0px 0px 10px rgba(255, 255, 255, 0.5);
   
