@@ -12,6 +12,7 @@ const store = createStore({
       userGroup: null,
       userGroupId: null,
       userId: null,
+      notifications: [] // Добавляем состояние для уведомлений
     };
   },
   mutations: {
@@ -34,6 +35,19 @@ const store = createStore({
       state.userGroup = null;
       state.userGroupId = null;
       state.userId = null;
+    },
+    // Мутации для управления уведомлениями
+    addNotification(state, notification) {
+      if (state.notifications.length >= 4) {
+        state.notifications.shift(); // Убираем старые уведомления, если их больше 3
+      }
+      state.notifications.push(notification);
+    },
+    removeNotification(state, id) {
+      state.notifications = state.notifications.filter(notif => notif.id !== id);
+    },
+    clearNotifications(state) {
+      state.notifications = [];
     }
   },
   actions: {
@@ -89,6 +103,23 @@ const store = createStore({
           console.error('Failed to fetch user:', error);
           commit('clearAuthData');
         });
+    },
+    // Действия для управления уведомлениями
+    addNotification({ commit }, notification) {
+      const id = Date.now();
+      const timeout = notification.timeout || 5000; // По умолчанию 5 секунд
+      commit('addNotification', { id, ...notification });
+
+      // Автоматическое удаление уведомления через timeout
+      setTimeout(() => {
+        commit('removeNotification', id);
+      }, timeout);
+    },
+    removeNotification({ commit }, id) {
+      commit('removeNotification', id);
+    },
+    clearNotifications({ commit }) {
+      commit('clearNotifications');
     }
   },
   getters: {
@@ -98,6 +129,7 @@ const store = createStore({
     userGroup: state => state.userGroup,
     userGroupId: state => state.userGroupId,
     userId: state => state.userId,
+    notifications: state => state.notifications // Геттер для уведомлений
   }
 });
 

@@ -1,19 +1,22 @@
 <template>
-    <div class="main-block-buttons">
-      <div 
-        class="item-big-button-img" 
-        v-for="option in options" 
-        :key="option.header" 
-        @click="navigateToPage(option.path)"
-        
-      >
-        <div class="block-text-left">
-          <h3>{{ option.header }}</h3>
-          <p>{{ option.description }}</p>
-        </div>
+  <div class="main-block-buttons">
+    <div 
+      class="item-big-button-img" 
+      v-for="option in options" 
+      :key="option.header" 
+      @click="navigateToPage(option.path)"
+      :style="{
+        background: `linear-gradient(90deg, rgba(78, 99, 132, 1) 11%, rgba(82, 179, 182, 0.563) 100%), url(${option.image}) no-repeat center center`
+      }"
+    >
+      <div class="block-text-left">
+        <h3>{{ option.header }}</h3>
+        <p>{{ option.description }}</p>
       </div>
     </div>
-  </template>
+  </div>
+</template>
+
   
   <script>
   import AOS from 'aos';
@@ -48,8 +51,7 @@
   }
   
   .item-big-button-img {
-    background: linear-gradient(90deg, rgba(78, 99, 132, 1) 11%, rgba(82, 179, 182, 0.563) 100%), 
-              url('/resources/assets/images/qr_kode_scan.jpg') no-repeat center center; /* Добавляем фон */
+
   display: block;
   position: relative;
   background-size: cover;

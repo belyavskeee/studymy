@@ -1,4 +1,5 @@
 <template>
+    <my-notification ref="notificationComponent" />
     <router-view/>
 </template>
 

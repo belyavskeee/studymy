@@ -18,7 +18,6 @@
         </div>
     </div>
     <my-footer/>
-    <my-notification ref="notificationComponent" />
 </template>
 
 <script>
@@ -38,13 +37,13 @@ export default {
                 header: 'QR-коды',
                 description: 'Узнать поробнее об системе',
                 path: '/login',
-                image: '@/resources/assets/images/qr_kode_scan.jpg'
+                image: '/resources/assets/images/qr_kode_scan.jpg'
             },
             { 
-                header: 'Учебные заведения',
-                description: 'Выбрать учебное заведение',
+                header: 'Распознавание лиц',
+                description: 'Прочитать подробнее',
                 path: '/institutions',
-                image: '@/resources/assets/images/qr_kode_scan.jpg'
+                image: '/resources/assets/images/qr_kode_scan.jpg'
             }
         ],
         title: ''
@@ -60,33 +59,35 @@ export default {
             this.options = data;
         } catch (error) {
             console.error('Ошибка загрузки данных:', error);
-            this.$refs.notificationComponent.addNotification({
+            // Вместо обращения к $refs, вызываем экшен через store
+            this.$store.dispatch('addNotification', {
                 title: 'Ошибка',
                 message: 'Ошибка загрузки данных!',
                 icon: 'fas fa-exclamation-triangle',
-                type: 'error'
+                type: 'error',
+                timeout: 50000
             });
         }
     },
 
     methods: {
-    showErrorNotification() {
-      this.$refs.notificationComponent.addNotification({
-        title: 'Ошибка',
-        message: 'Произошла ошибка!',
-        icon: 'fas fa-exclamation-triangle',
-        type: 'error'
-      });
-    },
-    showSuccessNotification() {
-      this.$refs.notificationComponent.addNotification({
-        title: 'Успех',
-        message: 'Операция прошла успешно!',
-        icon: 'fas fa-check-circle',
-        type: 'success'
-      });
+        showErrorNotification() {
+            this.$store.dispatch('addNotification', {
+                title: 'Ошибка',
+                message: 'Произошла ошибка!',
+                icon: 'fas fa-exclamation-triangle',
+                type: 'error'
+            });
+        },
+        showSuccessNotification() {
+            this.$store.dispatch('addNotification', {
+                title: 'Успех',
+                message: 'Операция прошла успешно!',
+                icon: 'fas fa-check-circle',
+                type: 'success'
+            });
+        }
     }
-  }
 
 }
 </script>
