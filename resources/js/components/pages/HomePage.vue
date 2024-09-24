@@ -142,7 +142,6 @@ export default {
 
 @media (max-width: 480px) {
     .main-block {
-        margin: 0;
         padding: 0px !important;
     }
 

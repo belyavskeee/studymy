@@ -1,8 +1,8 @@
 <template>
   <div class="auth-block">
     <div class="auth-block-text">
-      <h4>УО «Новопольский государственный<br>аграрно-экономический колледж»</h4>
-      <p>Электронный журнал</p>
+      <h4>Электронный информационный ресурс для учреждений образования</h4>
+      <p>beStudy™</p>
     </div>
     <div class="block-registration">
       <img :src="pictureAuth" data-aos="fade-down" data-aos-duration="2500" alt="svg картинка">
@@ -10,42 +10,55 @@
       <div class="form-auth">
         <div class="swiper swiper-auth">
           <div class="image-slider__wrapper swiper-wrapper">
+            <!-- Вход -->
             <div class="swiper-slide">
               <form class="form-input auth-slide" @submit.prevent="loginUser">
                 <input type="text" v-model="loginData.login" name="login" placeholder="Логин" :class="{'error': loginError}"><br>
                 <input type="password" v-model="loginData.password" name="password" placeholder="Пароль" :class="{'error': loginError}"><br>
-                <input class="form-button-go" type="submit" value="Войти"><br>
+                
+                <!-- Кнопка входа с динамическим отображением текста и спиннера -->
+                <button class="form-button-go" type="submit" :disabled="loading">
+                  <span v-if="!loading">Войти</span>
+                  <span v-if="loading" class="spinner"></span>
+                </button>
+                
+                <br>
                 <input @click="swiper.slideNext()" class="form-button-reg btn-next" type="button" value="Регистрация">
-                <div class="msg__auth" :style="{ display: loginError ? 'block' : 'none' }">
-                  <img class="msg__auth__img" :src="pictureAttention">
-                  <p class="msg__auth__p">{{ loginError }}</p>
-                </div>
                 <a href="https://t.me/matve_blvsk" class="a-href">Забыли пароль?</a>
               </form>
             </div>
+
+            <!-- Код регистрации -->
             <div class="swiper-slide">
               <form class="form-input auth-slide" @submit.prevent="registerCodUser">
                 <input type="text" v-model="registerCodData.user_password" name="user_password" placeholder="Введите код" required><br>
                 <a href="#" style="margin: 20px 15px 0 15px;">Регистрируясь, вы соглашаетесь с условиями Пользовательского соглашения и Политики конфиденциальности</a>
-                <input class="form-button-go" type="submit" value="Регистрация"><br>
+                
+                <!-- Кнопка регистрации с кодом -->
+                <button class="form-button-go" type="submit" :disabled="loading">
+                  <span v-if="!loading">Регистрация</span>
+                  <span v-if="loading" class="spinner"></span>
+                </button>
+                
+                <br>
                 <input @click="swiper.slidePrev()" class="form-button-reg btn-prev" type="button" value="У меня есть аккаунт">
-                <div class="msg__auth" :style="{ display: registerCodError ? 'block' : 'none' }">
-                  <img class="msg__auth__img" :src="pictureAttention">
-                  <p class="msg__auth__p">{{ registerCodError }}</p>
-                </div>
               </form>
             </div>
+
+            <!-- Полная регистрация -->
             <div class="swiper-slide">
               <form class="form-input auth-slide" @submit.prevent="registerUser">
-                <!-- Полная регистрационная форма -->
                 <a href="#" style="margin: 20px 15px 0 15px;">Придумайте логин и пароль</a>
                 <input type="text" v-model="registerData.login" name="login" placeholder="Логин" :class="{'error': registerError}"><br>
                 <input type="password" v-model="registerData.password" name="password" placeholder="Пароль" :class="{'error': registerError}"><br>
-                <input class="form-button-go" type="submit" value="Регистрация"><br>
-                <div class="msg__auth" :style="{ display: registerError ? 'block' : 'none' }">
-                  <img class="msg__auth__img" :src="pictureAttention">
-                  <p class="msg__auth__p">{{ registerError }}</p>
-                </div>
+                
+                <!-- Кнопка полной регистрации -->
+                <button class="form-button-go" type="submit" :disabled="loading">
+                  <span v-if="!loading">Регистрация</span>
+                  <span v-if="loading" class="spinner"></span>
+                </button>
+                
+                <br>
               </form>
             </div>
           </div>
@@ -56,8 +69,7 @@
 </template>
 
 <script>
-import pictureAuth from '/resources/assets/images/1.svg'
-import pictureAttention from '/resources/assets/images/attention.png'
+import pictureAuth from '/resources/assets/images/1.svg';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Swiper from 'swiper';
@@ -69,7 +81,6 @@ export default {
     return {
       swiper: null,
       pictureAuth,
-      pictureAttention,
       loginData: {
         login: '',
         password: ''
@@ -83,38 +94,31 @@ export default {
       },
       loginError: '',
       registerError: '',
-      registerCodError: ''
+      loading: false, // Для отслеживания состояния загрузки
+      loginAttempts: 0, // Количество попыток входа
+      codAttempts: 0, // Количество попыток ввода кода
+      registerAttempts: 0 // Количество попыток регистрации
     };
   },
   methods: {
     validateLogin() {
       this.loginError = '';
       if (!this.loginData.login) {
-        this.loginError = 'Логин обязателен.';
+        this.$store.dispatch('addNotification', {
+          title: 'Упс...',
+          message: 'Тут нужен логин!',
+          type: 'error',
+          timeout: 15000
+        });
         return false;
       }
       if (!this.loginData.password) {
-        this.loginError = 'Пароль обязателен.';
-        return false;
-      }
-      return true;
-    },
-    validateRegisterCod() {
-      this.registerCodError = '';
-      if (!this.registerCodData.user_password) {
-        this.registerCodError = 'Пароль обязателен.';
-        return false;
-      }
-      return true;
-    },
-    validateRegister() {
-      this.registerError = '';
-      if (!this.registerData.login) {
-        this.registerError = 'Логин обязателен.';
-        return false;
-      }
-      if (!this.registerData.password) {
-        this.registerError = 'Пароль обязателен.';
+        this.$store.dispatch('addNotification', {
+          title: 'Упс...',
+          message: 'Тут нужен пароль!',
+          type: 'error',
+          timeout: 15000
+        });
         return false;
       }
       return true;
@@ -122,28 +126,87 @@ export default {
     loginUser() {
       if (!this.validateLogin()) return;
 
-      this.$store.dispatch('login', this.loginData)
-        .then(() => {
-          this.$router.push('/main');
-        })
-        .catch(error => {
-          console.error('Login failed:', error);
-          this.loginError = 'Неправильный логин или пароль.';
-          this.showError('loginError');
+      this.loading = true; // Включаем режим загрузки
+      this.loginAttempts++;
+
+      const delay = Math.min(this.loginAttempts * 250, 15000);
+
+      setTimeout(() => {
+        this.$store.dispatch('login', this.loginData)
+          .then(() => {
+            this.$router.push('/main');
+          })
+          .catch(error => {
+            this.$store.dispatch('addNotification', {
+              title: 'Упс...',
+              message: 'Неправильный логин или пароль!',
+              type: 'error',
+              timeout: 15000
+            });
+          })
+          .finally(() => {
+            this.loading = false; // Выключаем режим загрузки    
+          });
+      }, delay);
+    },
+    validateRegisterCod() {
+      if (!this.registerCodData.user_password) {
+        this.$store.dispatch('addNotification', {
+          title: 'Упс...',
+          message: 'Нужен одноразовый код!',
+          type: 'error',
+          timeout: 15000
         });
+        return false;
+      }
+      return true;
     },
     registerCodUser() {
       if (!this.validateRegisterCod()) return;
 
-      axios.post('/api/check-user-password', this.registerCodData)
-        .then(() => {
-          this.swiper.slideNext();
-        })
-        .catch(error => {
-          console.error('Registration code check failed:', error);
-          this.registerCodError = 'Неправильный одноразовый код.';
-          this.showError('registerCodError');
+      this.loading = true; // Включаем режим загрузки
+      this.codAttempts++;
+
+      const delay = Math.min(this.codAttempts * 250, 15000);
+
+      setTimeout(() => {
+        axios.post('/api/check-user-password', this.registerCodData)
+          .then(() => {
+            this.swiper.slideNext();
+          })
+          .catch(() => {
+            this.$store.dispatch('addNotification', {
+              title: 'Упс...',
+              message: 'Неправильный одноразовый код!',
+              type: 'error',
+              timeout: 15000
+            });
+          })
+          .finally(() => {
+            this.loading = false; // Выключаем режим загрузки
+          });
+      }, delay);
+    },
+    validateRegister() {
+      if (!this.registerData.login) {
+        this.$store.dispatch('addNotification', {
+          title: 'Упс...',
+          message: 'Необходим логин!',
+          type: 'error',
+          timeout: 15000
         });
+        return false;
+      }
+      if (!this.registerData.password) {
+        this.$store.dispatch('addNotification', {
+          title: 'Упс...',
+          message: 'Тут нужен пароль!',
+          type: 'error',
+          timeout: 15000
+        });
+        return false;
+      }
+      return true;
     },
     registerUser() {
       if (!this.validateRegister()) return;
@@ -154,27 +217,30 @@ export default {
         user_password: this.registerCodData.user_password
       };
 
-      axios.post('/api/update-user', registerData)
-        .then(() => {
-          this.loginData.login = this.registerData.login;
-          this.loginData.password = this.registerData.password;
-          this.loginUser();
-        })
-        .catch(error => {
-          console.error('Registration failed:', error);
-          this.registerError = 'Ошибка регистрации.';
-        });
-    },
-    showError(errorType) {
-      this.$nextTick(() => {
-        const msgAuth = document.querySelector(`.${errorType}`);
-        if (msgAuth) {
-          msgAuth.style.display = 'block';
-          setTimeout(() => {
-            msgAuth.style.opacity = '1';
-          }, 10);
-        }
-      });
+      this.loading = true; // Включаем режим загрузки
+      this.registerAttempts++;
+
+      const delay = Math.min(this.registerAttempts * 250, 15000);
+
+      setTimeout(() => {
+        axios.post('/api/update-user', registerData)
+          .then(() => {
+            this.loginData.login = this.registerData.login;
+            this.loginData.password = this.registerData.password;
+            this.loginUser(); // После успешной регистрации логинимся
+          })
+          .catch(() => {
+            this.$store.dispatch('addNotification', {
+              title: 'Упс...',
+              message: 'Непредвиденная ошибка регистрации!',
+              type: 'error',
+              timeout: 15000
+            });
+          })
+          .finally(() => {
+            this.loading = false; // Выключаем режим загрузки
+          });
+      }, delay);
     }
   },
   mounted() {
@@ -182,12 +248,35 @@ export default {
     this.swiper = new Swiper('.swiper-auth', {
       loop: false,
       allowTouchMove: false,
-      spaceBetween: 0,
+      spaceBetween: 0
     });
   }
 };
 </script>
 
 <style>
-/* Ваши стили здесь */
+  .form-button-go {
+    /* height: 52px; */
+  }
+  .spinner {
+    display: block;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid white;
+    border-left: 3px solid white;
+    border-bottom: 3px solid white;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    margin: 0 auto;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 </style>

@@ -15,6 +15,12 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     // Если страница требует авторизации
     if (!isAuthenticated) {
+      store.dispatch('addNotification', {
+        title: 'Упс...',
+        message: 'Вам нужно войти в систему',
+        type: 'error',
+        timeout: 5000,
+      });
       next('/login');
       return;
     }
@@ -24,6 +30,12 @@ router.beforeEach((to, from, next) => {
       const allowedRoles = to.meta.allowedRoles;
 
       if (allowedRoles && !allowedRoles.includes(userPermission)) {
+        store.dispatch('addNotification', {
+          title: 'Упс...',
+          message: 'Кажется вам туда нельзя.',
+          type: 'error',
+          timeout: 5000,
+        });
         next('/main');
         return;
       }
@@ -31,6 +43,14 @@ router.beforeEach((to, from, next) => {
   } else if (to.matched.some(record => record.meta.requiresGuest)) {
     // Если страница доступна только для гостей (неавторизованных пользователей)
     if (isAuthenticated) {
+      // Убираем обращение к this, используем store напрямую
+      store.dispatch('addNotification', {
+        title: 'Упс...',
+        message: 'Вы уже авторизованы',
+        icon: 'fas fa-exclamation-triangle',
+        type: 'error',
+        timeout: 5000,
+      });
       next('/'); // перенаправляем авторизованных пользователей на главную страницу или другую
       return;
     }

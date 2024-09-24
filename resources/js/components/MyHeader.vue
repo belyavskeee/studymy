@@ -49,7 +49,7 @@ export default {
   display: flex;
   background-color: #E8EFF9;
   border-radius: 50px;
-  margin: 20px 0;
+  margin: 20px 0 0 0;
   padding: 5px 0px 5px 5px;
 }
 

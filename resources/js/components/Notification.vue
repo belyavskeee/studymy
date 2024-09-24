@@ -67,6 +67,7 @@ export default {
 
 .notification {
   background-color: #e8eff9;
+  box-shadow: 0px 10px 10px rgba(78, 99, 132, 0.22);
   color: #4E6384;
   padding: 15px;
   margin-bottom: 10px;
@@ -85,10 +86,15 @@ export default {
 
 .icon {
   background-color: #dbe6f4;
-  width: 40px;
-  height: 40px;
+  width: fit-content;
+  height: fit-content;
+  padding: 5px;
   border-radius: 10px;
   margin-right: 10px;
+
+  svg {
+    vertical-align: middle;
+  }
 }
 
 .text-content {
@@ -126,6 +132,16 @@ export default {
   to {
     transform: translateY(100%);
     opacity: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .notification-container {
+    width: 100%;
+  }
+
+  .notification {
+    width: 80%;
   }
 }
 </style>

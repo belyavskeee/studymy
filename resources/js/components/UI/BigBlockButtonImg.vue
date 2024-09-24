@@ -177,7 +177,7 @@
   
   @media (max-width: 480px) {
   
-    .item-big-button {
+    .item-big-button-img {
       width: 100%;
       height: 180px;
   

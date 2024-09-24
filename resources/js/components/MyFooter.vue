@@ -1,7 +1,7 @@
 <template>
     <footer>
 		<div class="block-footer">
-			<a href="http://www.ngaek.by/index.php/ru/">Сайт колледжа</a>
+			<a @click="this.$router.push('/report-error');">Информация о нас</a>
 			<p>© 2023-2024 beStudy.by</p>
 			<a @click="this.$router.push('/report-error');">Сообщить об ошибке</a>
 		</div>

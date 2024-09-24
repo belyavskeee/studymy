@@ -1,5 +1,5 @@
 <template>
-	<div style="margin-top: 5px;" class="inline-block">
+	<div class="inline-block">
 	  <div style="height: fit-content; display: flex;">
 		<div @click="goBack" id="back-arrow" class="arrow-back-error-page">
 		  <img :src="arrowError" alt="Стрелка">
