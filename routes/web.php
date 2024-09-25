@@ -34,6 +34,6 @@ Route::get('/uploads-errors/{filename}', function ($filename) {
 
 Route::get('/download-statement/{subject}/{group}', [ExportController::class, 'downloadStatement']);
 
-Route::get('{any?}', fn () =>  view('home'))->where('any', '.*');
+Route::get('{any?}', fn () =>  view('index'))->where('any', '.*');
 
 

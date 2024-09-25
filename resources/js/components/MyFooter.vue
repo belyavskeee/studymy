@@ -23,7 +23,7 @@ footer p{
 	text-align: center;
 	color: #617492;
 	font-size: 12px;
-	margin: 0 40px 0 80px;
+	margin: 0 60px 0 60px;
 	vertical-align: middle;
 	font-family: 'rubick-light', Georgia, serif;
 }

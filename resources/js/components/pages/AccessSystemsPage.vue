@@ -37,13 +37,13 @@ export default {
                 header: 'QR-коды',
                 description: 'Узнать поробнее об системе',
                 path: '/login',
-                image: '/resources/assets/images/qr_kode_scan.jpg'
+                image: 'qr_kode_scan.jpg'
             },
             { 
                 header: 'Распознавание лиц',
                 description: 'Прочитать подробнее',
                 path: '/institutions',
-                image: '/resources/assets/images/qr_kode_scan.jpg'
+                image: 'face_system.jpg'
             }
         ],
         title: ''
@@ -54,20 +54,20 @@ export default {
     },
     async mounted() {
         document.title = 'Главная - beStudy';
-        try {
-            const data = await fetchData();
-            this.options = data;
-        } catch (error) {
-            console.error('Ошибка загрузки данных:', error);
-            // Вместо обращения к $refs, вызываем экшен через store
-            this.$store.dispatch('addNotification', {
-                title: 'Ошибка',
-                message: 'Ошибка загрузки данных!',
-                icon: 'fas fa-exclamation-triangle',
-                type: 'error',
-                timeout: 50000
-            });
-        }
+        // try {
+        //     const data = await fetchData();
+        //     this.options = data;
+        // } catch (error) {
+        //     console.error('Ошибка загрузки данных:', error);
+        //     // Вместо обращения к $refs, вызываем экшен через store
+        //     this.$store.dispatch('addNotification', {
+        //         title: 'Ошибка',
+        //         message: 'Ошибка загрузки данных!',
+        //         icon: 'fas fa-exclamation-triangle',
+        //         type: 'error',
+        //         timeout: 50000
+        //     });
+        // }
     },
 
     methods: {
