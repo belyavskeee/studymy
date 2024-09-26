@@ -33,17 +33,17 @@ export default {
     data() {
         return {
             valueButtons: [
-            { 
+            {
                 header: 'QR-коды',
-                description: 'Узнать поробнее об системе',
+                description: 'Узнать подробнее об системе',
                 path: '/login',
-                image: 'qr_kode_scan.jpg'
+                image: new URL('/resources/assets/images/qr_kode_scan.jpg', import.meta.url).href
             },
-            { 
+            {
                 header: 'Распознавание лиц',
                 description: 'Прочитать подробнее',
                 path: '/institutions',
-                image: 'face_system.jpg'
+                image: new URL('/resources/assets/images/face_system.jpg', import.meta.url).href
             }
         ],
         title: ''

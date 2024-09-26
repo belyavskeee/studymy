@@ -1,184 +1,182 @@
-import AuthPage from "../components/pages/AuthPage.vue";
-import ReportErrorPage from "../components/pages/ReportErrorPage.vue";
-import MainPage from "../components/pages/MainPage.vue";
-import ProfilePage from "../components/pages/ProfilePage.vue";
-import SubjectPage from "../components/pages/SubjectPage.vue";
-import DetailSubjectPage from "../components/pages/DetailSubjectPage.vue";
-import StudyMainPage from "../components/pages/StudyMainPage.vue";
-import GroupsPage from "../components/pages/GroupsPage.vue";
-import StudyGroupsPage from "../components/pages/StudyGroupsPage.vue";
-import DetailGroupPage from "../components/pages/DetailGroupPage.vue";
-import DetailGroupStudentsPage from "../components/pages/DetailGroupStudentsPage.vue";
-import ProfileUserPage from "../components/pages/ProfileUserPage.vue";
-import AddUserPage from "../components/pages/AddUserPage.vue";
-import DetailGroupSubjectsPage from "../components/pages/DetailGroupSubjectsPage.vue";
-import UsersPage from "../components/pages/UsersPage.vue";
-import CreateTimetablePage from "../components/pages/CreateTimetablePage.vue";
-import StoreErrorsPage from "../components/pages/StoreErrorsPage.vue";
-import AddSubjectPage from "../components/pages/AddSubjectPage.vue";
-import AddGroupPage from "../components/pages/AddGroupPage.vue";
-import DeleteUserPage from "../components/pages/DeleteUserPage.vue";
-import DeleteGroupPage from "../components/pages/DeleteGroupPage.vue";
-import HomePage from "../components/pages/HomePage.vue";
-import InstitutionsPage from "../components/pages/InstitutionsPage.vue";
-import AccessSystemsPage from "../components/pages/AccessSystemsPage.vue";
+// 1. Динамический импорт для ленивой загрузки страниц
+const AuthPage = () => import("../components/pages/AuthPage.vue");
+const ReportErrorPage = () => import("../components/pages/ReportErrorPage.vue");
+const MainPage = () => import("../components/pages/MainPage.vue");
+const ProfilePage = () => import("../components/pages/ProfilePage.vue");
+const SubjectPage = () => import("../components/pages/SubjectPage.vue");
+const DetailSubjectPage = () => import("../components/pages/DetailSubjectPage.vue");
+const StudyMainPage = () => import("../components/pages/StudyMainPage.vue");
+const GroupsPage = () => import("../components/pages/GroupsPage.vue");
+const StudyGroupsPage = () => import("../components/pages/StudyGroupsPage.vue");
+const DetailGroupPage = () => import("../components/pages/DetailGroupPage.vue");
+const DetailGroupStudentsPage = () => import("../components/pages/DetailGroupStudentsPage.vue");
+const ProfileUserPage = () => import("../components/pages/ProfileUserPage.vue");
+const AddUserPage = () => import("../components/pages/AddUserPage.vue");
+const DetailGroupSubjectsPage = () => import("../components/pages/DetailGroupSubjectsPage.vue");
+const UsersPage = () => import("../components/pages/UsersPage.vue");
+const CreateTimetablePage = () => import("../components/pages/CreateTimetablePage.vue");
+const StoreErrorsPage = () => import("../components/pages/StoreErrorsPage.vue");
+const AddSubjectPage = () => import("../components/pages/AddSubjectPage.vue");
+const AddGroupPage = () => import("../components/pages/AddGroupPage.vue");
+const DeleteUserPage = () => import("../components/pages/DeleteUserPage.vue");
+const DeleteGroupPage = () => import("../components/pages/DeleteGroupPage.vue");
+const HomePage = () => import("../components/pages/HomePage.vue");
+const InstitutionsPage = () => import("../components/pages/InstitutionsPage.vue");
+const AccessSystemsPage = () => import("../components/pages/AccessSystemsPage.vue");
+
+// 2. Шаблоны метаданных
+const requiresAuth = { requiresAuth: true };
+const moderatorOnly = { requiresAuth: true, allowedRoles: ['Модератор'] };
+const teacherOrModerator = { requiresAuth: true, allowedRoles: ['Преподаватель', 'Модератор'] };
+
+// 3. Группировка маршрутов по схожим путям и ролям
+const groupRoutes = [
+    {
+        path: '/groups', 
+        component: GroupsPage,
+        name: 'Groups',
+    },
+    {
+        path: '/groups/study-groups',
+        component: StudyGroupsPage,
+        name: 'StudyGroups',
+    },
+    {
+        path: '/groups/study-groups/:id',
+        component: DetailGroupPage,
+        name: 'DetailGroup',
+    },
+    {
+        path: '/groups/study-groups/:id/students',
+        component: DetailGroupStudentsPage,
+        name: 'DetailGroupStudents',
+    },
+    {
+        path: '/groups/study-groups/:id/subjects',
+        component: DetailGroupSubjectsPage,
+        name: 'DetailGroupSubjects',
+    },
+].map(route => ({ ...route, meta: teacherOrModerator }));
 
 const routes = [
     {
-        path: '/login', 
+        path: '/login',
         component: AuthPage,
         name: 'Login',
-        meta: { requiresGuest: true }
+        meta: { requiresGuest: true },
     },
     {
-        path: '/', 
+        path: '/',
         component: HomePage,
         name: 'Home',
     },
     {
-        path: '/report-error', 
+        path: '/report-error',
         component: ReportErrorPage,
         name: 'ReportError',
-        // meta: { requiresAuth: true }
     },
     {
-        path: '/institutions', 
+        path: '/institutions',
         component: InstitutionsPage,
         name: 'Institutions',
     },
     {
-        path: '/access-systems', 
+        path: '/access-systems',
         component: AccessSystemsPage,
         name: 'AccessSystems',
     },
     {
-        path: '/store-errors', 
+        path: '/store-errors',
         component: StoreErrorsPage,
         name: 'Errors',
-        meta: { requiresAuth: true, allowedRoles: ['Модератор'] }
+        meta: moderatorOnly,
     },
     {
-        path: '/main', 
+        path: '/main',
         component: MainPage,
         name: 'Main',
-        meta: { requiresAuth: true }
-    },
-    {
-        path: '/profile', 
-        component: ProfilePage,
-        name: 'Profile',
-        meta: { requiresAuth: true }
-    },
-    {
-        path: '/subject/:id', 
-        component: SubjectPage,
-        name: 'Subject',
-        meta: { requiresAuth: true }
-    },
-    {
-        path: '/detail-subject/:id', 
-        component: DetailSubjectPage,
-        name: 'DetailSubject',
-        meta: { requiresAuth: true }
+        meta: requiresAuth,
     },
     {
         path: '/study-main', 
         component: StudyMainPage,
         name: 'StudyMain',
-        meta: { requiresAuth: true, allowedRoles: ['Преподаватель', 'Модератор'] }
+        meta: teacherOrModerator,
     },
     {
-        path: '/groups', 
-        component: GroupsPage,
-        name: 'Groups',
-        meta: { requiresAuth: true, allowedRoles: ['Преподаватель', 'Модератор'] }
+        path: '/profile',
+        component: ProfilePage,
+        name: 'Profile',
+        meta: requiresAuth,
     },
     {
-        path: '/groups/study-groups', 
-        component: StudyGroupsPage,
-        name: 'StudyGroups',
-        meta: { requiresAuth: true , allowedRoles: ['Преподаватель', 'Модератор']}
+        path: '/subject/:id',
+        component: SubjectPage,
+        name: 'Subject',
+        meta: requiresAuth,
     },
     {
-        path: '/groups/study-groups/:id', 
-        component: DetailGroupPage,
-        name: 'DetailGroup',
-        meta: { requiresAuth: true, allowedRoles: ['Преподаватель', 'Модератор'] }
+        path: '/detail-subject/:id',
+        component: DetailSubjectPage,
+        name: 'DetailSubject',
+        meta: requiresAuth,
     },
     {
-        path: '/groups/study-groups/:id/students', 
-        component: DetailGroupStudentsPage,
-        name: 'DetailGroupStudents',
-        meta: { requiresAuth: true, allowedRoles: ['Преподаватель', 'Модератор'] }
-    },
-    {
-        path: '/profile/:id', 
+        path: '/profile/:id',
         component: ProfileUserPage,
         name: 'ProfileUser',
-        meta: { requiresAuth: true, allowedRoles: ['Преподаватель', 'Модератор'] }
+        meta: teacherOrModerator,
     },
     {
-        path: '/add-user', 
+        path: '/add-user',
         component: AddUserPage,
         name: 'AddUser',
-        meta: { requiresAuth: true,allowedRoles: [ 'Модератор'] }
+        meta: moderatorOnly,
     },
     {
-        path: '/groups/study-groups/:id/subjects', 
-        component: DetailGroupSubjectsPage,
-        name: 'DetailGroupSubjects',
-        meta: { requiresAuth: true, allowedRoles: ['Преподаватель', 'Модератор'] }
-    },
-    {
-        path: '/users', 
+        path: '/users',
         component: UsersPage,
         name: 'Users',
-        meta: { requiresAuth: true, allowedRoles: ['Модератор'] }
+        meta: moderatorOnly,
     },
     {
-        path: '/timetable/create', 
+        path: '/timetable/create',
         component: CreateTimetablePage,
         name: 'CreateTimetable',
-        meta: { requiresAuth: true, allowedRoles: ['Модератор'] }
+        meta: moderatorOnly,
     },
     {
-        path: '/add-subject', 
+        path: '/add-subject',
         component: AddSubjectPage,
         name: 'AddSubject',
-        meta: { requiresAuth: true, allowedRoles: ['Модератор'] }
+        meta: moderatorOnly,
     },
     {
-        path: '/add-subject/:id', 
+        path: '/add-subject/:id',
         component: AddSubjectPage,
         name: 'UpdateSubject',
-        meta: { requiresAuth: true, allowedRoles: ['Модератор'] }
+        meta: moderatorOnly,
     },
     {
-        path: '/add-group', 
+        path: '/add-group',
         component: AddGroupPage,
         name: 'AddGroup',
-        meta: { requiresAuth: true, allowedRoles: ['Модератор'] }
+        meta: moderatorOnly,
     },
     {
-        path: '/user/:id/delete', 
+        path: '/user/:id/delete',
         component: DeleteUserPage,
         name: 'DeleteUser',
-        meta: { requiresAuth: true, allowedRoles: ['Модератор'] }
+        meta: moderatorOnly,
     },
     {
-        path: '/user/:id/delete', 
-        component: DeleteUserPage,
-        name: 'DeleteUser',
-        meta: { requiresAuth: true, allowedRoles: ['Модератор'] }
-    },
-    {
-        path: '/groups/study-groups/:id/delete', 
+        path: '/groups/study-groups/:id/delete',
         component: DeleteGroupPage,
         name: 'DeleteGroup',
-        meta: { requiresAuth: true, allowedRoles: ['Модератор'] }
-    }
-    
+        meta: moderatorOnly,
+    },
+    // сгруппированные маршруты для групп
+    ...groupRoutes,
 ];
-
 
 export default routes;

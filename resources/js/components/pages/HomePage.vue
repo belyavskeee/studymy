@@ -1,42 +1,49 @@
 <template>
-    <my-header v-if="isAuthenticated"></my-header>
-    <div class="auth-block main-block">
-        <div class="home-block">
-            <div class="home-block-background">
-                <div class="background-1">
-                    <p v-for="n in 15">ЦИФРОВИЗАЦИЯ</p>
+
+
+        <my-header v-if="isAuthenticated"></my-header>
+        <div class="auth-block main-block">
+            <div class="home-block">
+                <div class="home-block-background">
+                    <div class="background-1">
+                        <p v-for="n in 15">ЦИФРОВИЗАЦИЯ</p>
+                    </div>
+                    <div class="background-2">
+                        <p v-for="n in 15">УЧЕБА</p>
+                    </div>
+                    <div class="background-1">
+                        <p v-for="n in 15">ЭКОЛОГИЧНОСТЬ</p>
+                    </div>
+                    <div class="background-2">
+                        <p v-for="n in 15">ДОСТУПНОСТЬ</p>
+                    </div>
                 </div>
-                <div class="background-2">
-                    <p v-for="n in 15">УЧЕБА</p>
-                </div>
-                <div class="background-1">
-                    <p v-for="n in 15">ЭКОЛОГИЧНОСТЬ</p>
-                </div>
-                <div class="background-2">
-                    <p v-for="n in 15">ДОСТУПНОСТЬ</p>
-                </div>
+                <h1>beStudy.by</h1>
             </div>
-            <h1>beStudy.by</h1>
+            <div>
+                <big-block-button :options="valueButtons"/>
+            </div>
         </div>
-        <div>
-            <big-block-button :options="valueButtons"/>
-        </div>
-    </div>
-    <my-footer/>
+        <my-footer/>
+
+    
 </template>
 
 <script>
 import BigBlockButton from "@/components/ui/BigBlockButton.vue";
 import RotatingText from '@/components/ui/RotatingText.vue';
+import Preloader from "@/components/ui/Preloader.vue";
 import { bottom, right } from "@popperjs/core";
 import { mapGetters, mapActions } from 'vuex';
 export default {
     components: {
         BigBlockButton,
-        RotatingText
+        RotatingText,
+        Preloader
     },
     data() {
         return {
+            loading: true,
             valueButtons: [
             { 
                 header: 'Авторизация',
@@ -71,6 +78,17 @@ export default {
     },
     mounted() {
         document.title = 'Главная - beStudy';
+        // window.addEventListener('load', () => {
+        //     this.isLoading = false;
+        // });
+        // setTimeout(() => {
+        //     this.isLoading = false;
+        // }, 5000);
+    },
+    methods: {
+        handleLoaded() {
+            this.loading = false; // Когда все загрузится, скрываем прелоадер
+        }
     }
 }
 </script>

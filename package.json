@@ -27,6 +27,7 @@
         "date-fns": "^3.6.0",
         "exceljs": "^4.4.0",
         "file-saver": "^2.0.5",
+        "fontfaceobserver": "^2.3.0",
         "jquery": "^3.7.1",
         "swiper": "^11.1.0",
         "vue-axios": "^3.5.2",

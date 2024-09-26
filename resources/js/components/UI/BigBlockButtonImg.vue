@@ -6,7 +6,7 @@
       :key="option.header" 
       @click="navigateToPage(option.path)"
       :style="{
-        background: `linear-gradient(90deg, rgba(78, 99, 132, 1) 11%, rgba(82, 179, 182, 0.563) 100%), url('http://127.0.0.1:5173/resources/assets/images/${option.image}')`,
+        background: `linear-gradient(90deg, rgba(78, 99, 132, 1) 11%, rgba(82, 179, 182, 0.563) 100%), url('${option.image}')`,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center center',
         backgroundSize: 'cover'
@@ -113,7 +113,7 @@
   .arrow-text {
     transform: translateX(0) !important;
     opacity: 1 !important;
-    margin: auto 0;
+    margin: auto 0 !important;
   }
   .arrow-background {
     width: 100% !important;
