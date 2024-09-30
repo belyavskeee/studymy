@@ -1,7 +1,5 @@
 <template>
-    <my-header v-if="isAuthenticated"></my-header>
     <report-error-component/>
-    <my-footer/>
 </template>
 
 <script>

@@ -60,7 +60,7 @@ const store = createStore({
 
         localStorage.setItem('token', data.token);
         axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
-        router.push('/');
+        router.push('/profile');
       } catch (error) {
         console.error('Login failed:', error);
         throw error;

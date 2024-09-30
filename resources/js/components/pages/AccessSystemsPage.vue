@@ -1,5 +1,4 @@
 <template>
-    <my-header v-if="isAuthenticated"></my-header>
     <div class="auth-block main-block">
         <div class="more-info item-settings-list">
             <h3>Добавить заведение к системе</h3>
@@ -17,7 +16,6 @@
             <big-block-button-img :options="valueButtons"/>
         </div>
     </div>
-    <my-footer/>
 </template>
 
 <script>

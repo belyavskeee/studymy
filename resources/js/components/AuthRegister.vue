@@ -134,7 +134,7 @@ export default {
       setTimeout(() => {
         this.$store.dispatch('login', this.loginData)
           .then(() => {
-            this.$router.push('/main');
+            // this.$router.push('/main');
           })
           .catch(error => {
             this.$store.dispatch('addNotification', {
@@ -255,9 +255,6 @@ export default {
 </script>
 
 <style>
-  .form-button-go {
-    /* height: 52px; */
-  }
   .spinner {
     display: block;
     border: 3px solid rgba(255, 255, 255, 0.3);

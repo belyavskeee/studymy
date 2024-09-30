@@ -1,7 +1,5 @@
 <template>
-    <my-header/>
     <create-timetable-component/>
-    <my-footer/>
 </template>
 
 <script>

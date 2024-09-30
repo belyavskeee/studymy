@@ -1,7 +1,5 @@
 <template>
-  <my-header/>
   <add-form :options="valueMenu" :title="title" :selecters="valueSelecters" @form-submitted="handleFormSubmission"/>
-  <my-footer/>
 </template>
 
 <script>

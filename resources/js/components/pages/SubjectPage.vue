@@ -1,7 +1,5 @@
 <template>
-    <my-header/>
     <subject-component/>
-    <my-footer/>
 </template>
 
 <script>

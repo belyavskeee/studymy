@@ -1,13 +1,11 @@
 <template>
-    <my-header/>
     <add-form 
       :options="valueMenu" 
       :title="title" 
       :selecters="valueSelecters" 
       @form-submitted="handleFormSubmission"
     />
-    <my-footer/>
-  </template>
+</template>
   
   <script>
   import AddForm from "@/components/UI/AddForm.vue";

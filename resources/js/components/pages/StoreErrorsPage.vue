@@ -1,7 +1,5 @@
 <template>
-    <my-header/>
     <errors-main-component/>
-    <my-footer/>
 </template>
 
 <script>

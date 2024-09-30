@@ -1,16 +1,14 @@
 <template>
-    <my-header/>
-    <div class="auth-block main-block" style="overflow: hidden;">
-      <div class="list-settings" data-aos="fade-right">
-        <h1 class="title-menu">Вы действительно хотите удалить предмет?</h1>
-        <div class="item-settings-list" @click="deleteSubject">
-          <h3>Да, удалить</h3>
-          <p></p>
-        </div>
+  <div class="auth-block main-block" style="overflow: hidden;">
+    <div class="list-settings" data-aos="fade-right">
+      <h1 class="title-menu">Вы действительно хотите удалить предмет?</h1>
+      <div class="item-settings-list" @click="deleteSubject">
+        <h3>Да, удалить</h3>
+        <p></p>
       </div>
     </div>
-    <my-footer/>
-  </template>
+  </div>
+</template>
   
   <script>
   import AOS from 'aos';

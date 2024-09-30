@@ -37,7 +37,7 @@ router.beforeEach((to, from, next) => {
           type: 'error',
           timeout: 5000,
         });
-        next('/main');
+        next('/');
         return;
       }
     }

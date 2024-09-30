@@ -1,7 +1,6 @@
 <template>
     <!-- <big-loader/> -->
     <auth-register/>
-    <my-footer/>
 </template>
 
 <script>

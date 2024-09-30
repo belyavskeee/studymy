@@ -1,7 +1,5 @@
 <template>
-    <my-header/>
     <profile-component/>
-    <my-footer/>
 </template>
 
 <script>

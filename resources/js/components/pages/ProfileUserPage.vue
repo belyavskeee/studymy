@@ -1,7 +1,5 @@
 <template>
-    <my-header />
     <menu-inline :options="valueMenu" :title="title" />
-    <my-footer />
 </template>
 
 <script>

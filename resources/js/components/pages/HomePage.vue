@@ -1,7 +1,4 @@
 <template>
-
-
-        <my-header v-if="isAuthenticated"></my-header>
         <div class="auth-block main-block">
             <div class="home-block">
                 <div class="home-block-background">
@@ -24,7 +21,6 @@
                 <big-block-button :options="valueButtons"/>
             </div>
         </div>
-        <my-footer/>
 
     
 </template>
@@ -34,7 +30,6 @@ import BigBlockButton from "@/components/ui/BigBlockButton.vue";
 import RotatingText from '@/components/ui/RotatingText.vue';
 import Preloader from "@/components/ui/Preloader.vue";
 import { bottom, right } from "@popperjs/core";
-import { mapGetters, mapActions } from 'vuex';
 export default {
     components: {
         BigBlockButton,
@@ -72,9 +67,6 @@ export default {
         ],
         title: ''
         };
-    },
-    computed: {
-    ...mapGetters(['isAuthenticated']),
     },
     mounted() {
         document.title = 'Главная - beStudy';
