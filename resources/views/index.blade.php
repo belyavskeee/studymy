@@ -13,9 +13,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    
-    <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
     <style>
         @font-face {
@@ -35,7 +32,7 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 0.4s;
+            transition: opacity 0.2s;
         }
 
         #preloader p {
@@ -45,18 +42,22 @@
             color: white;
         }
 
-        .loader {
-            border: 8px solid #f3f3f3;
-            border-radius: 50%;
-            border-top: 8px solid #3498db;
-            width: 60px;
-            height: 60px;
-            animation: spin 2s linear infinite;
+        .font-loading {
+            color: transparent !important; /* скрываем текст */
+            height: 1em;
+            overflow: hidden;
+            position: relative;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        /* Пример для плавного появления текста */
+        .font-loaded {
+            color: #000; /* Цвет текста */
+            opacity: 0; /* Скрываем текст перед показом */
+            transition: opacity 0.5s ease-in-out; /* Плавное появление текста */
+        }
+
+        .font-visible {
+            opacity: 1; /* Плавное проявление текста */
         }
 
         @media all and (max-width: 900px) {
@@ -77,12 +78,9 @@
 </head>
 <body>
     <div id="preloader">
-        <!-- <div class="loader"></div> -->
-        <p>beStudy.by</p>
+        <p class="font-loading font-loaded" id="text-block">beStudy.by</p>
     </div>
-    <div id="app">
-        
-    </div>
+    <div id="app"></div>
 
     <script>
         window.addEventListener('load', function() {
@@ -93,6 +91,21 @@
                 preloader.style.display = 'none';
             }, 400); // 500 мс для плавного исчезновения
         });
+
+        if (document.fonts) {
+            document.fonts.load('1em Raleway').then(function() {
+                const textBlock = document.getElementById('text-block');
+                textBlock.classList.remove('font-loading');
+                textBlock.classList.add('font-visible'); // Показываем текст с анимацией
+            });
+        } else {
+            // Если browser не поддерживает document.fonts, просто покажите текст после некоторой задержки
+            setTimeout(() => {
+                const textBlock = document.getElementById('text-block');
+                textBlock.classList.remove('font-loading');
+                textBlock.classList.add('font-visible');
+            }, 1000); // ожидание 3 сек
+        }
     </script>
 </body>
 </html>

@@ -111,8 +111,9 @@ export default {
 
         p {
             color: #5a6c8b;
-            font-family: 'raleway-black', 'courier new', sans-serif;
+            font-family: 'raleway-black', 'Arial', sans-serif;
             font-size: 30px;               /* Размер текста */
+            font-weight: bold;
             margin: 0;
             padding: 0;
             line-height: 0.85;
@@ -144,7 +145,7 @@ export default {
         left: 50%;
         transform: translate(-50%, -50%);
         font-size: 50px;
-        font-family: 'raleway-black', 'courier new', sans-serif;
+        font-family: 'raleway-black', 'Arial', sans-serif;
    }
 }
 
