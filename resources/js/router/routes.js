@@ -22,7 +22,7 @@ const DeleteUserPage = () => import("../components/pages/DeleteUserPage.vue");
 const DeleteGroupPage = () => import("../components/pages/DeleteGroupPage.vue");
 const HomePage = () => import("../components/pages/HomePage.vue");
 const InstitutionsPage = () => import("../components/pages/InstitutionsPage.vue");
-const AccessSystemsPage = () => import("../components/pages/AccessSystemsPage.vue");
+const AccessSystemsPage = () => import("../components/pages/AccessSystems/AccessSystemsPage.vue");
 const AccessSystemsDetailPage = () => import("../components/pages/AccessSystems/AccessSystemDetailPage.vue");
 const AccessSystemDisplayPage = () => import("../components/pages/AccessSystems/AccessSystemDisplayPage.vue");
 
@@ -67,20 +67,20 @@ const AccessSystemsRoutes = [
         component: AccessSystemsPage,
         name: 'AccessSystems',
     },
+    // {
+    //     path: '/access-systems/:id', // первый id может заменмить на название колледжа, не знаю как лучше
+    //     component: AccessSystemsDetailPage,
+    //     name: 'AccessSystemsDetail',
+    //     meta: { requiresAuth: true, allowedRoles: ['developer', 'Модератор']},
+    // },
     {
-        path: '/access-systems/:id/:id', // первый id может заменмить на название колледжа, не знаю как лучше
+        path: '/access-systems/:id/detail', // первый id может заменмить на название колледжа, не знаю как лучше
         component: AccessSystemsDetailPage,
         name: 'AccessSystemsDetail',
-        meta: { requiresAuth: true, allowedRoles: ['developer', 'Модератор']},
+        meta: { requiresAuth: true },
     },
     {
-        path: '/access-systems/:id/detail/:id', // первый id может заменмить на название колледжа, не знаю как лучше
-        component: AccessSystemsDetailPage,
-        name: 'AccessSystemsDetail',
-        meta: { requiresAuth: true, allowedRoles: ['developer', 'Модератор']},
-    },
-    {
-        path: '/access-systems/:id/detail/:id/display', // первый id может заменмить на название колледжа, не знаю как лучше
+        path: '/access-systems/:id/detail/display', // первый id может заменмить на название колледжа, не знаю как лучше
         component: AccessSystemDisplayPage,
         name: 'AccessSystemDisplay',
         meta: { requiresAuth: true, allowedRoles: ['developer', 'Модератор']},

@@ -1,7 +1,9 @@
 <template>
-    <div>
+    <div class="main-block">
         <div class="camera-detail-page">
-            <!-- камера -->
+            <video id="videoElement" autoplay playsinline></video>
+            <div v-if="isRecognizing">Идет распознавание...</div>
+            <button @click="startRecognition">Начать сканирование</button>
         </div>
         <div>
             <div>
@@ -15,61 +17,128 @@
 </template>
 
 <script>
-import BigBlockButtonImg from "@/components/ui/BigBlockButtonImg.vue";
-import RotatingText from '@/components/ui/RotatingText.vue';
-import { bottom, right } from "@popperjs/core";
+import * as faceapi from 'face-api.js';
+import jsQR from 'jsqr';
 import { mapGetters, mapActions } from 'vuex';
+
 export default {
-    components: {
-        BigBlockButtonImg,
-        RotatingText
-    },
-    data() {
-        return {
-            valueButtons: [
-            {
-                header: 'QR-коды',
-                description: 'Узнать подробнее об системе',
-                path: '/login',
-                image: new URL('/resources/assets/images/qr_kode_scan.jpg', import.meta.url).href
-            },
-            {
-                header: 'Распознавание лиц',
-                description: 'Прочитать подробнее',
-                path: '/institutions',
-                image: new URL('/resources/assets/images/face_system.jpg', import.meta.url).href
-            }
-        ],
-        title: ''
-        };
-    },
-    computed: {
+  data() {
+    return {
+      isRecognizing: false,
+      videoElement: null,
+      qrCodeFound: false,
+      labeledDescriptors: [], // Здесь будут загруженные данные с сервера
+    };
+  },
+  computed: {
     ...mapGetters(['isAuthenticated']),
+  },
+  async mounted() {
+    document.title = 'Вывод инофрмации - beStudy';
+    this.videoElement = document.getElementById('videoElement');
+    await this.loadModels(); // Загрузим модели для распознавания лиц
+  },
+  methods: {
+    ...mapActions(['addNotification']),
+    
+    async loadModels() {
+      // Загрузка моделей для face-api.js
+      await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
+      await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
+      await faceapi.nets.ssdMobilenetv1.loadFromUri('/models'); // Более быстрая модель
+      this.labeledDescriptors = await this.loadFaceDescriptors(); // Загрузим дескрипторы пользователей
     },
-    async mounted() {
-        document.title = 'Вывод инофрмации - beStudy';
+    
+    async loadFaceDescriptors() {
+      // Загрузка дескрипторов лиц с сервера (примерный метод)
+      const response = await fetch('/api/faces');
+      const faces = await response.json();
+      
+      return faces.map(face => {
+        const descriptors = face.descriptors.map(d => new Float32Array(d));
+        return new faceapi.LabeledFaceDescriptors(face.label, descriptors);
+      });
     },
 
-    methods: {
-        showErrorNotification() {
-            this.$store.dispatch('addNotification', {
-                title: 'Ошибка',
-                message: 'Произошла ошибка!',
-                icon: 'fas fa-exclamation-triangle',
-                type: 'error'
-            });
-        },
-        showSuccessNotification() {
-            this.$store.dispatch('addNotification', {
-                title: 'Успех',
-                message: 'Операция прошла успешно!',
-                icon: 'fas fa-check-circle',
-                type: 'success'
-            });
+    async startRecognition() {
+      this.isRecognizing = true;
+      this.scanQRCode();
+
+      setTimeout(async () => {
+        if (!this.qrCodeFound) {
+          await this.recognizeFace();
         }
-    }
+        this.isRecognizing = false;
+      }, 3000); // После 3 секунд переключаемся на распознавание лиц
+    },
 
-}
+    scanQRCode() {
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+
+      canvas.width = this.videoElement.videoWidth;
+      canvas.height = this.videoElement.videoHeight;
+
+      context.drawImage(this.videoElement, 0, 0, canvas.width, canvas.height);
+      const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+
+      const code = jsQR(imageData.data, canvas.width, canvas.height);
+      if (code) {
+        this.qrCodeFound = true;
+        this.sendToServer({ type: 'qr', data: code.data });
+        this.addNotification({
+          title: 'Успех',
+          message: 'QR-код распознан!',
+          icon: 'fas fa-check-circle',
+          type: 'success'
+        });
+      }
+    },
+
+    async recognizeFace() {
+      const fullFaceDescriptions = await faceapi.detectAllFaces(this.videoElement)
+        .withFaceLandmarks()
+        .withFaceDescriptors();
+
+      if (fullFaceDescriptions.length > 0) {
+        const faceMatcher = new faceapi.FaceMatcher(this.labeledDescriptors, 0.6);
+        const bestMatch = faceMatcher.findBestMatch(fullFaceDescriptions[0].descriptor);
+
+        if (bestMatch.label !== "unknown") {
+          this.sendToServer({ type: 'face', data: bestMatch.label });
+          this.addNotification({
+            title: 'Успех',
+            message: `Лицо распознано: ${bestMatch.label}`,
+            icon: 'fas fa-check-circle',
+            type: 'success'
+          });
+        } else {
+          this.addNotification({
+            title: 'Ошибка',
+            message: 'Лицо не распознано!',
+            icon: 'fas fa-exclamation-triangle',
+            type: 'error'
+          });
+        }
+      }
+    },
+
+    sendToServer(data) {
+      fetch('/api/access', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      }).then(response => {
+        if (response.ok) {
+          console.log("Access granted");
+          // Здесь можно отправить сигнал на турникет для пропуска
+        }
+      });
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -79,90 +148,11 @@ export default {
     width: fit-content;
     display: grid;
     position: relative;
-}
 
-.home-block {
-    position: relative;
-    background-color: #4f6384;
-    height: 250px;
-    /* width: 150px; */
-    margin: 20px 20px 0px 20px;
-    border-radius: 40px;
-    overflow: hidden;
-
-    .home-block-background {
-        display: flex;
-        position: absolute;
-        top: -40px;
-        left: -10px;
-
-        p {
-            color: #5a6c8b;
-            font-family: 'raleway-black', 'courier new', sans-serif;
-            font-size: 30px;               /* Размер текста */
-            margin: 0;
-            padding: 0;
-            line-height: 0.85;
-            -webkit-user-select: none; /* Safari */
-            -moz-user-select: none;    /* Firefox */
-            -ms-user-select: none;     /* Internet Explorer/Edge */
-            user-select: none;         /* Стандартное свойство */
-        }
-        
-        .background-2, .background-1  {
-            rotate: -10deg;
-        }
-
-        .background-1 p {
-            color: transparent;            /* Делаем текст прозрачным */
-            -webkit-text-stroke: 1.3px #5a6c8b; /* Толщина и цвет обводки */
-            // text-fill-color: transparent;  /* Заполняющий цвет текста (тоже прозрачный) */
-        }
-    }
-
-    h1 {
-        user-select: none;
-        color: white;
-        vertical-align: middle;
-        margin: 0;
-        text-align: center;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 50px;
-        font-family: 'raleway-black', 'courier new', sans-serif;
-   }
-}
-
-.more-info {
-    margin: 20px 20px 0 20px;
-    position: relative;
-    overflow: hidden;
-
-    p {
-        font-family: 'century gothic', Georgia, serif;
-        font-weight: 100;
-        position: absolute;
-        font-size: 180px;
-        bottom: -100px;
-        right: 25%;
-        rotate: -60deg;
-    }
-
-    .more-info-arrow {
-        // position: static;
-        margin: 0;
-        bottom: 20px;
-        right: 20px;
-        width: fit-content;
-
-        svg {
-            width: 15px;
-            height: 15px;
-            margin: 0px;
-            rotate: 180deg;
-        }
+    .camera-detail-page {
+        height: 500px;
+        width: 300px;
+        background-color: white;
     }
 }
 
