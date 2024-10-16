@@ -23,11 +23,14 @@ const DeleteGroupPage = () => import("../components/pages/DeleteGroupPage.vue");
 const HomePage = () => import("../components/pages/HomePage.vue");
 const InstitutionsPage = () => import("../components/pages/InstitutionsPage.vue");
 const AccessSystemsPage = () => import("../components/pages/AccessSystemsPage.vue");
+const AccessSystemsDetailPage = () => import("../components/pages/AccessSystems/AccessSystemDetailPage.vue");
+const AccessSystemDisplayPage = () => import("../components/pages/AccessSystems/AccessSystemDisplayPage.vue");
 
 // 2. Шаблоны метаданных
 const requiresAuth = { requiresAuth: true };
 const moderatorOnly = { requiresAuth: true, allowedRoles: ['Модератор'] };
 const teacherOrModerator = { requiresAuth: true, allowedRoles: ['Преподаватель', 'Модератор'] };
+const developer = { requiresAuth: true, allowedRoles: ['developer'] };
 
 // 3. Группировка маршрутов по схожим путям и ролям
 const groupRoutes = [
@@ -58,6 +61,32 @@ const groupRoutes = [
     },
 ].map(route => ({ ...route, meta: teacherOrModerator }));
 
+const AccessSystemsRoutes = [
+    {
+        path: '/access-systems',
+        component: AccessSystemsPage,
+        name: 'AccessSystems',
+    },
+    {
+        path: '/access-systems/:id/:id', // первый id может заменмить на название колледжа, не знаю как лучше
+        component: AccessSystemsDetailPage,
+        name: 'AccessSystemsDetail',
+        meta: { requiresAuth: true, allowedRoles: ['developer', 'Модератор']},
+    },
+    {
+        path: '/access-systems/:id/detail/:id', // первый id может заменмить на название колледжа, не знаю как лучше
+        component: AccessSystemsDetailPage,
+        name: 'AccessSystemsDetail',
+        meta: { requiresAuth: true, allowedRoles: ['developer', 'Модератор']},
+    },
+    {
+        path: '/access-systems/:id/detail/:id/display', // первый id может заменмить на название колледжа, не знаю как лучше
+        component: AccessSystemDisplayPage,
+        name: 'AccessSystemDisplay',
+        meta: { requiresAuth: true, allowedRoles: ['developer', 'Модератор']},
+    }
+];
+
 const routes = [
     {
         path: '/login',
@@ -79,11 +108,6 @@ const routes = [
         path: '/institutions',
         component: InstitutionsPage,
         name: 'Institutions',
-    },
-    {
-        path: '/access-systems',
-        component: AccessSystemsPage,
-        name: 'AccessSystems',
     },
     {
         path: '/store-errors',
@@ -177,6 +201,7 @@ const routes = [
     },
     // сгруппированные маршруты для групп
     ...groupRoutes,
+    ...AccessSystemsRoutes,
 ];
 
 export default routes;
