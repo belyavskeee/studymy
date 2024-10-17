@@ -26,7 +26,7 @@
         "aos": "^2.3.4",
         "date-fns": "^3.6.0",
         "exceljs": "^4.4.0",
-        "face-api.js": "^0.22.2",
+        "face-api.js": "^0.20.0",
         "file-saver": "^2.0.5",
         "fontfaceobserver": "^2.3.0",
         "jquery": "^3.7.1",
