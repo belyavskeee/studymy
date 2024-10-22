@@ -95,7 +95,7 @@ export default {
   }
 
   svg {
-    width: 40px;
+    width: 38px;
     height: 35px;
     fill: #4E6384;
     vertical-align: middle;
@@ -108,9 +108,9 @@ export default {
     }
 
     p {
-      font-size: 13px;
+      font-size: 12px;
       text-align: left;
-      margin: 5px 0 0 0;
+      margin: 0;
       max-width: 80%;
       color: #4f6384;
       font-family: 'rubick-light', Georgia, serif;
@@ -119,9 +119,9 @@ export default {
     }
 
     h3 {
-      font-size: 24px;
+      font-size: 20px;
       font-weight: lighter;
-      margin: 35px 0px 0 0;
+      margin: 0;
       text-align: left;
       font-family: 'rubick-regular', Georgia, serif;
       -webkit-transition-duration: 0.5s; /* Safari */
@@ -130,10 +130,10 @@ export default {
 
     .block-text-left {
       position: relative;
-      width: 80%;
+      width: 100%;
       // height: 100%;
-      bottom: 0px;
-      left: 20px;
+      top: 70px;
+      left: 25px;
       z-index: 1;
     }
 

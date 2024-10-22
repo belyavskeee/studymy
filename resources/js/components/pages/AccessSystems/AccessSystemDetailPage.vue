@@ -5,12 +5,15 @@
             <div v-if="isRecognizing">Идет распознавание...</div>
             <button @click="startRecognition">Начать сканирование</button>
         </div>
-        <div>
+        <div style="display: flex;">
             <div>
                 <big-block-button-2 :options="valueButtons" :columns="1"/>
             </div>
             <div>
+              <div>
 
+              </div>
+              <button></button>
             </div>
         </div>
     </div>
