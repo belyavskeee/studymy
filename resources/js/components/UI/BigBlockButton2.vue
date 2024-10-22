@@ -4,7 +4,7 @@
       class="item-big-button"
       v-for="(option, index) in options"
       :key="option.header"
-      :style="getButtonStyles(option.spanButton)"
+      :style="[getButtonStyles(option.spanButton), { maxWidth: maxWidth }]"
       @click="navigateToPage(option.path)"
     >
       <div class="block-text-left">
@@ -31,10 +31,11 @@ export default {
       type: Number,
       default: 2, // количество колонок по умолчанию
     },
-    spanMap: {
-      type: Array,
-      default: () => [], // массив для указания, сколько колонок занимает каждая кнопка
-    },
+    maxWidth: {
+      type: String,
+      required: false, // Пропс не обязателен
+      default: '400px',
+    }
   },
   methods: {
     navigateToPage(path) {
@@ -52,7 +53,6 @@ export default {
       return {
         "grid-template-columns": `repeat(${this.columns}, 1fr)`, // задаем количество колонок через пропс
         gap: "20px",
-        padding: "20px",
         "justify-items": "center",
       };
     },
@@ -67,13 +67,13 @@ export default {
 .main-block-buttons {
   display: grid;
   gap: 20px;
-  padding: 20px;
   justify-items: center;
 }
 
 .item-big-button {
   background-color: #e8eff9;
   border-radius: 50px;
+  // max-width: 400px;
   width: 100%; /* Занимает всю ширину колонки */
   height: 150px;
   display: flex;
@@ -84,6 +84,7 @@ export default {
   overflow: hidden;
   user-select: none;
   position: relative;
+  will-change: transform;
 
   .icon-container {
     position: absolute;
@@ -108,10 +109,10 @@ export default {
     }
 
     p {
-      font-size: 12px;
+      font-size: 13px;
       text-align: left;
       margin: 0;
-      max-width: 80%;
+      
       color: #4f6384;
       font-family: 'rubick-light', Georgia, serif;
       -webkit-transition-duration: 0.4s; /* Safari */
@@ -119,7 +120,7 @@ export default {
     }
 
     h3 {
-      font-size: 20px;
+      font-size: 19px;
       font-weight: lighter;
       margin: 0;
       text-align: left;
@@ -130,10 +131,8 @@ export default {
 
     .block-text-left {
       position: relative;
-      width: 100%;
-      // height: 100%;
       top: 70px;
-      left: 25px;
+      margin: 0 25px;
       z-index: 1;
     }
 

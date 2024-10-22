@@ -5,15 +5,25 @@
             <div v-if="isRecognizing">Идет распознавание...</div>
             <button @click="startRecognition">Начать сканирование</button>
         </div>
-        <div style="display: flex;">
-            <div>
-                <big-block-button-2 :options="valueButtons" :columns="1"/>
+        <div class="grid-container">
+            <div class="name-college">
+              <h3>Учреждение образования</h3>
+              <p>Новопольский государственный аграрно-экономический колледж</p>
             </div>
-            <div>
-              <div>
+            <div class="some-btns">
+                <big-block-button-2 :options="valueButtons" :columns="1" :maxWidth="maxWidthValue"/>
+            </div>
+            <div class="second-row">
+              <div class="left-menu">
 
               </div>
-              <button></button>
+              <input class="btn-toggle" type="button" value="Отключить систему">
+              <div class="curent-date">
+                <div>
+                  <h3>{{ formattedDate }}</h3>
+                  <p>{{ formattedTime }}</p>
+                </div>
+              </div>
             </div>
         </div>
     </div>
@@ -34,6 +44,8 @@ export default {
             isRecognizing: false,
             videoElement: null,
             qrCodeFound: false,
+            maxWidthValue: '320px',
+            currentDate: new Date(),
             labeledDescriptors: [], // Здесь будут загруженные данные с сервера
 
             valueButtons: [
@@ -61,14 +73,28 @@ export default {
     },
   computed: {
     ...mapGetters(['isAuthenticated']),
+
+    formattedDate() {
+      const options = {day:'numeric', month: 'long', year: 'numeric'};
+      return this.currentDate.toLocaleDateString('ru-Ru', options);
+    },
+    formattedTime() {
+      return this.currentDate.toLocaleTimeString('ru-Ru', {hour12: false});
+    },
   },
   async mounted() {
     document.title = 'Вывод инофрмации - beStudy';
     this.videoElement = document.getElementById('videoElement');
-    await this.loadModels(); // Загрузим модели для распознавания лиц
+    // await this.loadModels(); // Загрузим модели для распознавания лиц
+    this.updateTime();
   },
   methods: {
     ...mapActions(['addNotification']),
+
+    updateTime() {
+      this.currentDate = new Date();
+      requestAnimationFrame(this.updateTime);
+    },
     
     async loadModels() {
       // Загрузка моделей для face-api.js
@@ -178,13 +204,94 @@ export default {
     display: flex;
     position: relative;
 
+    h3 {
+        font-family: "rubick-light", Georgia, serif;
+        font-weight: bolder;
+        font-size: 16px;
+
+    }
+    p {
+      font-size: 16px;
+      margin: 0;
+      color: #4f6384;
+      font-family: 'rubick-light', Georgia, serif;
+    }
+
+    .grid-container {
+      display: grid;
+      // grid-template-columns: 1fr 1fr; /* Две колонки одинаковой ширины */
+      grid-template-rows: auto auto; /* Две строки: одна для заголовка, другая для контента */
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .name-college {
+      grid-column: span 2; /* Растягиваем на два столбца */
+      text-align: center;  /* Можно добавить для центрирования текста */
+      background-color: #E8EFF9;
+      border-radius: 40px;
+      padding: 16px 0;
+    }
+
     .camera-detail-page {
         min-height: 300px;
         height: auto;
-        width: 300px;
+        width: 340px;
         background-color: #E8EFF9;
         border-radius: 40px;
         margin: 20px 0px 20px 20px;
+    }
+
+    .second-row {
+      grid-column: 2;
+      width: 270px;
+    }
+
+    .left-menu {
+      background-color: #E8EFF9;
+      border-radius: 40px;
+      // width: 300px;
+      height: 340px;
+      // margin: 20px 20px 0 0;
+    }
+
+    .curent-date {
+      background-color: #E8EFF9;
+      border-radius: 40px;
+      margin-top: 20px;
+      text-align: center;
+      height: 55px;
+      display: flex; /* Включаем Flexbox */
+      align-items: center; /* Вертикальное центрирование */
+      justify-content: center; /* Горизонтальное центрирование */
+
+      p,h3 {
+        font-size: 15px;
+      }
+    }
+
+    .btn-toggle {
+      background-color: #4f6384;
+      border: none;
+      border-radius: 40px;
+      height: 55px;
+      width: 100%;
+      font-family: "rubick-regular", Georgia, serif;
+      margin-top: 20px;
+      font-size: 15px;
+      color: white;
+      outline: none;
+      cursor: pointer;
+      -webkit-transition-duration: 0.5s; /* Safari */
+      transition-duration: 0.5s;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+
+    .some-btns {
+      grid-column: 1; /* Кнопки во втором столбце */
     }
 }
 
