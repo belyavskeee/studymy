@@ -58,15 +58,22 @@ export default {
         // Если соединения вообще нет
         if (!navigator.onLine) {
           this.$store.dispatch('addNotification', {
-            title: 'Космическая помеха',
+            title: 'Космическая помеха!',
             message: 'Кажется у вас нет интернета',
             icon: 'fas fa-exclamation-triangle',
             type: 'internet',
-            timeout: 30000,
+            timeout: 'none'
           });
+
+          window.addEventListener('online', this.removeInternetNotification);
         }
       }
     },
+    removeInternetNotification() {
+      // Удаляем уведомление с типом 'internet'
+      this.$store.dispatch('removeNotification', { type: 'internet' });
+      window.removeEventListener('online', this.removeInternetNotification);
+    }
   },
   beforeDestroy() {
     if (navigator.connection) {

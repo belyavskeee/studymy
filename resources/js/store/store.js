@@ -43,8 +43,12 @@ const store = createStore({
       }
       state.notifications.push(notification);
     },
-    removeNotification(state, id) {
-      state.notifications = state.notifications.filter(notif => notif.id !== id);
+    removeNotification(state, { id, type }) {
+      if (id) {
+        state.notifications = state.notifications.filter(notif => notif.id !== id);
+      } else if (type) {
+        state.notifications = state.notifications.filter(notif => notif.type !== type);
+      }
     },
     clearNotifications(state) {
       state.notifications = [];
@@ -104,19 +108,20 @@ const store = createStore({
           commit('clearAuthData');
         });
     },
-    // Действия для управления уведомлениями
     addNotification({ commit }, notification) {
       const id = Date.now();
-      const timeout = notification.timeout || 5000; // По умолчанию 5 секунд
+      const timeout = notification.timeout || 5000;
       commit('addNotification', { id, ...notification });
 
-      // Автоматическое удаление уведомления через timeout
-      setTimeout(() => {
-        commit('removeNotification', id);
-      }, timeout);
+      if (notification.timeout !== 'none') {
+        // Автоматическое удаление уведомления через timeout
+        setTimeout(() => {
+          commit('removeNotification', id);
+        }, timeout);
+      }
     },
-    removeNotification({ commit }, id) {
-      commit('removeNotification', id);
+    removeNotification({ commit }, payload) {
+      commit('removeNotification', payload);
     },
     clearNotifications({ commit }) {
       commit('clearNotifications');
