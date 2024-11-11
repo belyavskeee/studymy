@@ -55,7 +55,7 @@ const store = createStore({
     }
   },
   actions: {
-    async login({ commit }, authData) {
+    async login({ commit, dispatch }, authData) { // Добавляем dispatch в параметры
       try {
         const response = await axios.post('/api/login', authData);
         const data = response.data;
@@ -67,10 +67,16 @@ const store = createStore({
         router.push('/profile');
       } catch (error) {
         console.error('Login failed:', error);
+        dispatch('addNotification', { // Используем dispatch для вызова действия addNotification
+          title: 'Упс...',
+          message: 'Невозможно войти в кабинет',
+          type: 'error',
+          timeout: 15000,
+        });
         throw error;
       }
     },
-    async logout({ commit }) {
+    async logout({ commit, dispatch }) { // Добавляем dispatch в параметры
       try {
         const token = localStorage.getItem('token');
         if (!token) {
@@ -89,10 +95,16 @@ const store = createStore({
         router.push('/');
       } catch (error) {
         console.error('Logout failed:', error);
+        dispatch('addNotification', { // Используем dispatch для вызова действия addNotification
+          title: 'Упс...',
+          message: 'Непредвиденная ошибка, вы не можете выйти',
+          type: 'error',
+          timeout: 15000,
+        });
         throw error;
       }
     },
-    autoLogin({ commit }) {
+    autoLogin({ commit, dispatch }) { // Добавляем dispatch в параметры
       const token = localStorage.getItem('token');
       if (!token) {
         return;
@@ -105,6 +117,12 @@ const store = createStore({
         })
         .catch(error => {
           console.error('Failed to fetch user:', error);
+          dispatch('addNotification', { 
+            title: 'Упс...',
+            message: 'Непредвиденная ошибка входа',
+            type: 'error',
+            timeout: 15000,
+          });
           commit('clearAuthData');
         });
     },
@@ -116,7 +134,7 @@ const store = createStore({
       if (notification.timeout !== 'none') {
         // Автоматическое удаление уведомления через timeout
         setTimeout(() => {
-          commit('removeNotification', id);
+          commit('removeNotification', { id });
         }, timeout);
       }
     },

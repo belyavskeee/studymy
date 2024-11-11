@@ -83,9 +83,24 @@ export default {
     },
   },
   async mounted() {
-    document.title = 'Вывод инофрмации - beStudy';
+    document.title = 'Устройство входа/выхода - beStudy';
     this.videoElement = document.getElementById('videoElement');
     // await this.loadModels(); // Загрузим модели для распознавания лиц
+
+    try {
+    // Запрос доступа к камере и передача видеопотока элементу video
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    this.videoElement.srcObject = stream;
+  } catch (error) {
+    console.error("Ошибка доступа к камере: ", error);
+    this.addNotification({
+      title: 'Ошибка',
+      message: 'Не удалось получить доступ к камере.',
+      icon: 'fas fa-exclamation-triangle',
+      type: 'error'
+    });
+  }
+
     this.updateTime();
   },
   methods: {
@@ -203,6 +218,7 @@ export default {
     width: fit-content;
     display: flex;
     position: relative;
+    margin: 0;
 
     h3 {
         font-family: "rubick-light", Georgia, serif;

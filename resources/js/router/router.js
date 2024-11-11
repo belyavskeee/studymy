@@ -44,7 +44,6 @@ router.beforeEach((to, from, next) => {
   } else if (to.matched.some(record => record.meta.requiresGuest)) {
     // Если страница доступна только для гостей (неавторизованных пользователей)
     if (isAuthenticated) {
-      // Убираем обращение к this, используем store напрямую
       store.dispatch('addNotification', {
         title: 'Упс...',
         message: 'Вы уже авторизованы',

@@ -20,6 +20,14 @@
             src: url('{{ asset('/resources/assets/fonts/Raleway-Black.ttf') }}') format('truetype');
         }
 
+        #app {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Минимальная высота экрана */
+        }
+
         /* Стили для лоадера */
         #preloader {
             position: fixed;
