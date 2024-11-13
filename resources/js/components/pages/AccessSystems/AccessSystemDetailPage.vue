@@ -1,10 +1,18 @@
 <template>
     <div class="main-block">
         <div class="camera-detail-page">
+            <div class="video-text-block">
+              <p>Сканирование...</p>
+            </div>
+            <div class="video-inner-block">
+              <svg xmlns="http://www.w3.org/2000/svg" id="Layer_2" data-name="Layer 2" viewBox="0 0 64 64"><path d="M32,31.17969a7.30576,7.30576,0,1,0-7.05664-7.30176A7.19033,7.19033,0,0,0,32,31.17969Zm0-11.603a4.30891,4.30891,0,1,1-4.05664,4.30127A4.18918,4.18918,0,0,1,32,19.57666Z"></path><path d="M23.45264,30.21582A17.81727,17.81727,0,0,0,14.55127,42.959a3.86159,3.86159,0,0,0,.86621,3.1294,3.76816,3.76816,0,0,0,2.874,1.335h27.417a3.76816,3.76816,0,0,0,2.874-1.335,3.86159,3.86159,0,0,0,.86621-3.1294,17.81727,17.81727,0,0,0-8.90137-12.74316,1.50109,1.50109,0,0,0-1.82226.27783,9.232,9.232,0,0,1-13.4502,0A1.50057,1.50057,0,0,0,23.45264,30.21582ZM32,36.40088a12.3095,12.3095,0,0,0,8.01709-2.998,14.83779,14.83779,0,0,1,6.4707,10.04151.86436.86436,0,0,1-.1914.70166.76692.76692,0,0,1-.58789.27734H18.2915a.76692.76692,0,0,1-.58789-.27734.86436.86436,0,0,1-.1914-.70166,14.83779,14.83779,0,0,1,6.4707-10.04151A12.3095,12.3095,0,0,0,32,36.40088Z"></path><path d="M7,15.75293a8.3602,8.3602,0,0,1,8.355-8.34668h6.29736v-3H15.355A11.36379,11.36379,0,0,0,4,15.75293v5.9082H7Z"></path><path d="M57,48.24707a8.3602,8.3602,0,0,1-8.355,8.34668H42.34766v3H48.645A11.36379,11.36379,0,0,0,60,48.24707v-5.9082H57Z"></path><path d="M15.355,59.59375h6.29736v-3H15.355A8.3602,8.3602,0,0,1,7,48.24707v-5.9082H4v5.9082A11.36379,11.36379,0,0,0,15.355,59.59375Z"></path><path d="M48.645,4.40625H42.34766v3H48.645A8.3602,8.3602,0,0,1,57,15.75293v5.9082h3v-5.9082A11.36379,11.36379,0,0,0,48.645,4.40625Z"></path></svg>
+              <h3>Устройство сканирования</h3>
+            </div>
             <video id="videoElement" autoplay playsinline></video>
             <div v-if="isRecognizing">Идет распознавание...</div>
             <button @click="startRecognition">Начать сканирование</button>
         </div>
+
         <div class="grid-container">
             <div class="name-college">
               <h3>Учреждение образования</h3>
@@ -250,12 +258,66 @@ export default {
     }
 
     .camera-detail-page {
+        position: relative;
         min-height: 300px;
         height: auto;
         width: 340px;
         background-color: #E8EFF9;
         border-radius: 40px;
         margin: 20px 0px 20px 20px;
+        overflow: hidden;
+
+        ::before {
+          content: "";
+          position: absolute;
+          bottom: -20px;
+          left: 0;
+          right: 0;
+          height: 20%; 
+          backdrop-filter: blur(13px);
+          pointer-events: none;
+          mask-image: linear-gradient(to bottom, transparent, black);
+        }
+
+        .video-inner-block {
+          z-index: -1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          min-height: 100%; /* Минимальная высота экрана */
+          background: url('../../../../assets/images/qr_kode_scan.jpg') no-repeat center center / cover;
+
+          svg {
+            fill: #4f6384;
+            width: 150px;
+          }
+        }
+
+        .video-text-block {
+          bottom: 0px;
+          position: absolute;
+          height: 70px;
+          width: 100%;
+          z-index: 1; 
+
+          h3,p {
+            font-family: "rubick-regular", Georgia, serif;
+            color: white;
+            position: absolute;
+            z-index: 1;
+            width: 100%;
+            text-align: center;
+            bottom: 15px;
+            // font-weight: bold;
+          }
+        }
+
+        #videoElement {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
     }
 
     .second-row {
@@ -304,6 +366,7 @@ export default {
       &:hover {
         transform: scale(1.05);
       }
+
     }
 
     .some-btns {
