@@ -80,7 +80,7 @@ const AccessSystemsRoutes = [
         meta: { requiresAuth: true },
     },
     {
-        path: '/access-systems/:id/detail/display', // первый id может заменмить на название колледжа, не знаю как лучше
+        path: '/access-systems/:id/display', // первый id может заменмить на название колледжа, не знаю как лучше
         component: AccessSystemDisplayPage,
         name: 'AccessSystemDisplay',
         meta: { requiresAuth: true, allowedRoles: ['developer', 'Модератор']},

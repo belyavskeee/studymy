@@ -71,8 +71,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  -webkit-transition-duration: 0.5s; /* Safari */
-  transition-duration: 0.5s;
+  -webkit-transition-duration: 0.3s; /* Safari */
+  transition-duration: 0.3s;
   cursor: pointer;
   overflow: hidden;
   -webkit-user-select: none; /* Safari */
@@ -124,7 +124,7 @@
   .item-big-button-img:hover {
     transform: scale(1.05); /* Эффект увеличения при наведении */
     // background-color: #4f6384;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   //   box-shadow: inset 0px 0px 10px rgba(255, 255, 255, 0.5);
   }
   

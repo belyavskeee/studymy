@@ -9,7 +9,9 @@
     >
       <div class="block-text-left">
         <h3>{{ option.header }}</h3>
-        <p>{{ option.description }}</p>
+        <p 
+          :style="{ maxWidth: maxWidthText }"
+        >{{ option.description }}</p>
       </div>
       <div class="icon-background"></div>
       <div class="icon-container" v-html="option.icon"></div>
@@ -35,6 +37,11 @@ export default {
       type: String,
       required: false, // Пропс не обязателен
       default: '400px',
+    },
+    maxWidthText: {
+      type: String,
+      required: false,
+      default: 'auto',
     }
   },
   methods: {
