@@ -51,6 +51,7 @@ export default {
   border-radius: 50px;
   margin: 20px 0 0 0;
   padding: 5px 0px 5px 5px;
+  height: min-content;
 }
 
 .header-item {
@@ -59,6 +60,7 @@ export default {
   margin-right: 5px;
   cursor: pointer;
   transition-duration: 0.3s;
+  height: 65px;
 }
 
 .header-item:hover {

@@ -7,13 +7,13 @@
 */
 
 /* 1. header */
-header, .inline-block {
+/* header, .inline-block {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	text-align: center;
-  }
+  } */
   
   .block-header {
 	height: fit-content;
