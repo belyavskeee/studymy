@@ -1,13 +1,10 @@
 <template>
-  <!-- <preloader v-if="isLoading" /> -->
   <my-notification ref="notificationComponent" />
   <my-header v-if="isAuthenticated" />
-  <!-- <router-view v-slot="{ Component, route }">
-    <transition name="fade" mode="out-in">
-      <component :is="Component" :key="route.fullPath" />
-    </transition>
-  </router-view> -->
-  <router-view/>
+
+  <transition name="slide" mode="out-in">
+    <router-view :key="$route.fullPath" />
+  </transition>
   <my-footer/>
 </template>
 
@@ -85,13 +82,17 @@ export default {
 
 
 <style>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
+/* Анимация смены страниц */
+.slide-enter-active, .slide-leave-active {
+  transition: transform 0.15s ease-in-out, opacity 0.15s;
 }
 
-.fade-enter-from,
-.fade-leave-to {
+.slide-enter-from {
+  transform: translateY(10px);
+  opacity: 0;
+}
+.slide-leave-to {
+  transform: translateY(-10px);
   opacity: 0;
 }
 </style>

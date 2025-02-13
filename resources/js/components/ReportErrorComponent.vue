@@ -5,7 +5,7 @@
 		  <img :src="arrowError" alt="Стрелка">
 		</div>
 		<div class="auth-block main-block block-report" style="overflow: hidden;">
-		  <div class="error-report-block" data-aos="fade-right">
+		  <div class="error-report-block">
 			<div>
 			  <textarea v-model="description" style="margin: 0 auto;" class="textarea-default" name="description" id="myTextarea" cols="40" rows="9" placeholder="Опишите вашу проблему" maxlength="400"></textarea>
 			</div>
@@ -22,7 +22,7 @@
 				<p>{{ file.name }}</p>
 			  </div>
 			</div>
-			<div style="margin: 0 auto;">
+			<div style="margin: 0 auto; width: fit-content;">
 			  <input class="custom-checkbox" type="checkbox" name="checkbox-allow-report" id="myCheckbox" v-model="systemInfoAllowed">
 			  <label for="myCheckbox" class="label-default">Предоставить доступ к системной информации</label>
 			</div>
