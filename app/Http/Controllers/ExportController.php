@@ -21,9 +21,15 @@ class ExportController extends Controller
             // Найдите предмет и группу по ID
             $subject = Subject::findOrFail($subjectId);
             $group = Group::findOrFail($groupId);
+            $students = User::where('group_id', $groupId)
+                ->with(['marks' => function($query) use ($subjectId) {
+                    $query->where('subject_id', $subjectId);
+                }])
+                ->orderBy('sname')
+                ->get();
 
             // Загрузите существующий шаблон Excel
-            $templatePath = resource_path('assets/documents/exampel5.xlsx');
+            $templatePath = resource_path('assets/documents/exampel_statement.xlsx');
             $spreadsheet = IOFactory::load($templatePath);
             $sheet = $spreadsheet->getActiveSheet();
 
@@ -41,10 +47,29 @@ class ExportController extends Controller
             $sheet->setCellValue('A10', $this->appendCellValue($sheet->getCell('A10')->getValue(), $speciality->full_name));
             $sheet->setCellValue('H12', "{$teacher->sname} {$teacher->name} {$teacher->patronymic}");
 
-            // Запрос данных студентов
-            $students = User::with(['marks' => function($query) use ($subjectId) {
-                $query->where('subject_id', $subjectId);
-            }])->where('group_id', $groupId)->orderBy('sname')->get();
+            // // Запрос данных студентов более оптимален, но не объединяет ячейки
+            // $students = User::with(['marks' => function($query) use ($subjectId) {
+            //     $query->where('subject_id', $subjectId);
+            // }])->where('group_id', $groupId)->orderBy('sname')->get();
+
+            // $startRow = 21;
+            // foreach ($students as $index => $student) {
+            //     $targetRow = $startRow + $index;
+
+            //     // Копирование строки (быстрее, чем повторное применение стилей)
+            //     $sheet->insertNewRowBefore($targetRow + 1, 1);
+            //     $sheet->getRowDimension($targetRow)->setRowHeight(
+            //         $sheet->getRowDimension($startRow)->getRowHeight()
+            //     );
+
+            //     // Заполнение значений
+            //     $sheet->setCellValue("A{$targetRow}", $index + 1);
+            //     $sheet->setCellValue("C{$targetRow}", "{$student->sname} {$student->name} {$student->patronymic}");
+            //     $sheet->setCellValue("J{$targetRow}", $this->getOkrStatus($student));
+            //     $sheet->setCellValue("O{$targetRow}", $this->getPracticalCompletionStatus($student, $subjectId));
+            //     $sheet->setCellValue("U{$targetRow}", $this->getCourseMark($student));
+            //     $sheet->setCellValue("Z{$targetRow}", $this->getSemesterMark($student));
+            // }
 
             // Заполните данные студентов
             $startRow = 21; // Начальная строка для студентов
@@ -98,13 +123,28 @@ class ExportController extends Controller
             $style->setSize(14);
             $style->setUnderline(\PhpOffice\PhpSpreadsheet\Style\Font::UNDERLINE_SINGLE);
 
-            // Создайте временный файл для загрузки
-            $tempFile = tempnam(sys_get_temp_dir(), 'statement') . '.xlsx';
-            $writer = new Xlsx($spreadsheet);
-            $writer->save($tempFile);
+            // // Создайте временный файл для загрузки
+            // $tempFile = tempnam(sys_get_temp_dir(), 'Ведомость') . '.xlsx';
+            // $writer = new Xlsx($spreadsheet);
+            // $writer->save($tempFile);
 
-            // Отправьте файл пользователю
-            return response()->download($tempFile)->deleteFileAfterSend(true);
+            // // Отправьте файл пользователю
+            // return response()->download($tempFile)->deleteFileAfterSend(true);
+
+            ob_start();
+            $writer = new Xlsx($spreadsheet);
+            $writer->save('php://output');
+            $excelOutput = ob_get_clean();
+
+            $filename = 'Ведомость_' . $subject->short_name . '.xlsx'; //почему-то имя не меняется
+            $encodedFilename = iconv("UTF-8", "Windows-1251//TRANSLIT", $filename);
+
+            return response($excelOutput, 200, [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'Content-Disposition' => 'attachment; filename="' . rawurlencode($filename) . '"; filename*=UTF-8\'\'' . rawurlencode($filename),
+                'Cache-Control' => 'max-age=0',
+            ]);
+            
         } catch (\Exception $e) {
             Log::error('Ошибка при генерации отчета: ' . $e->getMessage());
             return response()->json(['error' => 'Ошибка при генерации отчета. Пожалуйста, попробуйте еще раз позже.'], 500);
